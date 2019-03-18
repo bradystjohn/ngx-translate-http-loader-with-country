@@ -1,7 +1,7 @@
 import {HttpClient} from "@angular/common/http";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {TestBed} from "@angular/core/testing";
-import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TranslateLoader, TranslateModule, TranslateService} from "ngx-translate-with-country";
 import {TranslateHttpLoader} from "../src/public_api";
 
 describe('TranslateLoader', () => {
@@ -38,7 +38,7 @@ describe('TranslateLoader', () => {
   });
 
   it('should be able to get translations', () => {
-    translate.use('en');
+    translate.use('en', 'US');
 
     // this will request the translation from the backend because we use a static files loader for TranslateService
     translate.get('TEST').subscribe((res: string) => {
@@ -46,7 +46,7 @@ describe('TranslateLoader', () => {
     });
 
     // mock response after the xhr request, otherwise it will be undefined
-    http.expectOne('/assets/i18n/en.json').flush({
+    http.expectOne('/assets/i18n/en-US.json').flush({
       "TEST": "This is a test",
       "TEST2": "This is another test"
     });
@@ -58,26 +58,26 @@ describe('TranslateLoader', () => {
   });
 
   it('should be able to reload a lang', () => {
-    translate.use('en');
+    translate.use('en', 'US');
 
     // this will request the translation from the backend because we use a static files loader for TranslateService
     translate.get('TEST').subscribe((res: string) => {
       expect(res).toEqual('This is a test');
 
       // reset the lang as if it was never initiated
-      translate.reloadLang('en').subscribe((res2: string) => {
+      translate.reloadLang('en', 'US').subscribe((res2: string) => {
         expect(translate.instant('TEST')).toEqual('This is a test 2');
       });
 
-      http.expectOne('/assets/i18n/en.json').flush({"TEST": "This is a test 2"});
+      http.expectOne('/assets/i18n/en-US.json').flush({"TEST": "This is a test 2"});
     });
 
     // mock response after the xhr request, otherwise it will be undefined
-    http.expectOne('/assets/i18n/en.json').flush({"TEST": "This is a test"});
+    http.expectOne('/assets/i18n/en-US.json').flush({"TEST": "This is a test"});
   });
 
   it('should be able to reset a lang', (done: Function) => {
-    translate.use('en');
+    translate.use('en', 'US');
     spyOn(http, 'expectOne').and.callThrough();
 
     // this will request the translation from the backend because we use a static files loader for TranslateService
@@ -101,6 +101,6 @@ describe('TranslateLoader', () => {
     });
 
     // mock response after the xhr request, otherwise it will be undefined
-    http.expectOne('/assets/i18n/en.json').flush({"TEST": "This is a test"});
+    http.expectOne('/assets/i18n/en-US.json').flush({"TEST": "This is a test"});
   });
 });
