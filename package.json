@@ -2,7 +2,7 @@
   "name": "ngx-translate-http-loader-with-country",
   "description": "A loader for ngx-translate-with-country that loads translations using http",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build": "ng build",
     "commit": "git-cz",
